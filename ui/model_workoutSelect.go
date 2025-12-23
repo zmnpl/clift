@@ -183,8 +183,8 @@ var workoutSelectKeys = workoutSelectKeymap{
 		key.WithHelp("n", "new"),
 	),
 	editWorkout: key.NewBinding(
-		key.WithKeys("e"),
-		key.WithHelp("e", "edit"),
+		key.WithKeys("f2"),
+		key.WithHelp("f2", "edit"),
 	),
 	selectDate: key.NewBinding(
 		key.WithKeys("f5"),

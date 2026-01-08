@@ -106,6 +106,18 @@ func (m exerciseEntry) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// TODO - apply reps / weight from selected inputs plan to actual
 			return m, coms.SendStatus("foo", nil)
 
+		case "f9":
+			if m.focusIndex < len(m.setInputs) {
+				m.setInputs[m.focusIndex].PlaceholderToValue()
+			}
+			return m, cmd
+
+		case "f10":
+			for i := 0; i < len(m.setInputs); i++ {
+				m.setInputs[i].PlaceholderToValue()
+			}
+			return m, cmd
+
 		case "enter":
 			if m.focusIndex == len(m.setInputs) {
 				if m.mode == MODE_RETURN_SETS {
@@ -121,7 +133,6 @@ func (m exerciseEntry) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			// start with dummy wid
 			var mywid uint
-			mywid = 99999999
 			if m.workout != nil {
 				mywid = m.workout.ID
 			}
@@ -261,24 +272,26 @@ func (m exerciseEntry) BreadCrumb() string {
 //------------------------------------------------------
 
 type exerciseEntryKeymap struct {
-	nav        key.Binding
-	confirm    key.Binding
-	back       key.Binding
-	changedate key.Binding
+	nav                 key.Binding
+	confirm             key.Binding
+	back                key.Binding
+	changedate          key.Binding
+	applyPlaceholder    key.Binding
+	applyPlaceholderAll key.Binding
 }
 
 // ShortHelp returns keybindings to be shown in the mini help view. It's part
 // of the key.Map interface.
 func (k exerciseEntryKeymap) ShortHelp() []key.Binding {
-	return []key.Binding{k.nav, k.changedate, k.confirm, k.back}
+	return []key.Binding{k.nav, k.changedate, k.applyPlaceholder, k.applyPlaceholderAll, k.confirm, k.back}
 }
 
 // FullHelp returns keybindings for the expanded help view. It's part of the
 // key.Map interface.
 func (k exerciseEntryKeymap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.nav, k.changedate}, // first column
-		{k.confirm, k.back},   // second column
+		{k.nav, k.applyPlaceholder, k.changedate}, // first column
+		{k.confirm, k.back},                       // second column
 	}
 }
 
@@ -290,6 +303,14 @@ var exerciseEntryKeys = exerciseEntryKeymap{
 	changedate: key.NewBinding(
 		key.WithKeys("f5"),
 		key.WithHelp("f5", "change date"),
+	),
+	applyPlaceholder: key.NewBinding(
+		key.WithKeys("f9"),
+		key.WithHelp("f9", "apply placeholder"),
+	),
+	applyPlaceholderAll: key.NewBinding(
+		key.WithKeys("f10"),
+		key.WithHelp("f10", "apply placeholder all"),
 	),
 	confirm: key.NewBinding(
 		key.WithKeys("enter"),

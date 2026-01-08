@@ -18,6 +18,15 @@ type SetInput struct {
 	Datum      time.Time
 }
 
+func (i *SetInput) PlaceholderToValue() {
+	if i.Reps.Value() == "" {
+		i.Reps.SetValue(i.Reps.Placeholder)
+	}
+	if i.Weight.Value() == "" {
+		i.Weight.SetValue(i.Weight.Placeholder)
+	}
+}
+
 func (i *SetInput) FocusReps() tea.Cmd {
 	cmd := i.Reps.Focus()
 	i.Reps.PromptStyle = FocusedStyle

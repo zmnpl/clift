@@ -207,29 +207,6 @@ func RemoveWorkout(id uint) func() tea.Msg {
 	}
 }
 
-func MakeDBPerformedSet(set SetInput, setno int, datum time.Time) wodb.PerformedSet {
-	reps, err := strconv.Atoi(set.Reps.Value())
-	if err != nil {
-		reps = 0
-		// TODO - pass error to user maybe
-	}
-	weight, err := strconv.ParseFloat(set.Weight.Value(), 64)
-	if err != nil {
-		weight = 0
-	}
-
-	foo := wodb.PerformedSet{
-		WorkoutID:     set.WorkoutId,
-		ExerciseID:    set.ExerciseId,
-		SetNo:         setno,
-		Reps:          reps,
-		Weight:        weight,
-		PerformedDate: datum,
-	}
-
-	return foo
-}
-
 func LoadPerformedSets() tea.Msg {
 	performedSets, err := wodb.Instance().GetAllPerformedSets()
 	if err != nil {
@@ -287,6 +264,29 @@ func MakeJournal(performedSets []wodb.PerformedSet) table.Model {
 }
 
 // model commands
+
+func MakeDBPerformedSet(set SetInput, setno int, datum time.Time) wodb.PerformedSet {
+	reps, err := strconv.Atoi(set.Reps.Value())
+	if err != nil {
+		reps = 0
+		// TODO - pass error to user maybe
+	}
+	weight, err := strconv.ParseFloat(set.Weight.Value(), 64)
+	if err != nil {
+		weight = 0
+	}
+
+	foo := wodb.PerformedSet{
+		WorkoutID:     set.WorkoutId,
+		ExerciseID:    set.ExerciseId,
+		SetNo:         setno,
+		Reps:          reps,
+		Weight:        weight,
+		PerformedDate: datum,
+	}
+
+	return foo
+}
 
 func LogSingleExercise(datum time.Time, setInputs []SetInput) func() tea.Msg {
 	return func() tea.Msg {

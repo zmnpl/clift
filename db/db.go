@@ -50,7 +50,7 @@ type Set struct {
 
 type PerformedSet struct {
 	ID            uint `gorm:"primaryKey;not null"`
-	WorkoutID     uint
+	WorkoutID     uint `gorm:"default:null"`
 	ExerciseID    string
 	PerformedDate time.Time
 	SetNo         int

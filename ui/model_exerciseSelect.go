@@ -155,6 +155,10 @@ func (m exerciseSelect) BreadCrumb() string {
 	return "exercises"
 }
 
+func (m exerciseSelect) Help() string {
+	return ""
+}
+
 // --------------------------------------------------------------------------------------
 
 type exerciseSelectKeymap struct {

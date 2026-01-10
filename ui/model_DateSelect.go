@@ -61,3 +61,7 @@ func (m selectDate) View() string {
 func (m selectDate) BreadCrumb() string {
 	return "select date"
 }
+
+func (m selectDate) Help() string {
+	return ""
+}

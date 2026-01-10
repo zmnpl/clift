@@ -239,6 +239,10 @@ func (m workout) BreadCrumb() string {
 	return m.workout.Name + edit
 }
 
+func (m workout) Help() string {
+	return ""
+}
+
 func (m workout) summary() string {
 	sb := &strings.Builder{}
 	sb.WriteString(m.workout.Name + "\n")

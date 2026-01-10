@@ -160,6 +160,10 @@ func (m workoutSelect) BreadCrumb() string {
 	return "workouts"
 }
 
+func (m workoutSelect) Help() string {
+	return ""
+}
+
 // ---------------------------------------------------------------
 type workoutSelectKeymap struct {
 	enter       key.Binding

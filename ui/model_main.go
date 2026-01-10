@@ -14,6 +14,7 @@ import (
 
 type Screen interface {
 	BreadCrumb() string
+	Help() string
 }
 
 const (
@@ -90,7 +91,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		coms.WINDOW_WIDTH = msg.Width
 		m.ws = msg
 		m.help.Width = msg.Width
-		for i, _ := range m.screenStack {
+		for i := range m.screenStack {
 			m.screenStack[i], _ = m.screenStack[i].Update(msg)
 		}
 
@@ -140,11 +141,17 @@ func (m model) View() string {
 	sb := &strings.Builder{}
 
 	// content height
-	ch := coms.GetContentHeight(m.ws.Height)
+	contentHeight := coms.GetContentHeight(m.ws.Height)
 
 	content := m.viewScreenMain()
+	help := ""
 	if m.currentScreen != nil {
 		content = m.currentScreen.View()
+		help = m.currentScreen.(Screen).Help()
+	}
+	if help != "" {
+		help = help + "\n"
+		contentHeight = contentHeight - lipgloss.Height(help)
 	}
 
 	breadcrumb := m.makeBreadCrumb() + "\n"
@@ -160,9 +167,13 @@ func (m model) View() string {
 	// }
 
 	sb.WriteString("\n" +
-		lipgloss.PlaceVertical(ch,
+		lipgloss.PlaceVertical(contentHeight,
 			lipgloss.Top,
 			content) + "\n")
+
+	if help != "" {
+		sb.WriteString(help)
+	}
 
 	sb.WriteString(status)
 

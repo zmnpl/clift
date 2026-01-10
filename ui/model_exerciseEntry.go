@@ -241,7 +241,12 @@ func (m exerciseEntry) View() string {
 	}
 	sb.WriteString(fmt.Sprintf("\n%v\n", button))
 
-	// TODO: Help view needs to go to the bottom ...
+	return sb.String()
+}
+
+func (m exerciseEntry) Help() string {
+	sb := &strings.Builder{}
+
 	helpView := m.help.View(exerciseEntryKeys)
 	sb.WriteString(helpView)
 

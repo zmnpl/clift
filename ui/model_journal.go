@@ -52,3 +52,7 @@ func (m journal) View() string {
 func (m journal) BreadCrumb() string {
 	return "journal"
 }
+
+func (m journal) Help() string {
+	return ""
+}

@@ -129,6 +129,16 @@ func (t *TrainingDB) GetAllWorkouts() ([]Workout, error) {
 	return ws, err
 }
 
+func (t *TrainingDB) GetAllPerformedWorkouts() ([]Workout, error) {
+	var ws []Workout
+	err := t.db.Preload("WorkoutExercises").
+		Preload("PerformedSets").
+		Preload("WorkoutExercises.Exercise").
+		Preload("WorkoutExercises.Sets").
+		Find(&ws).Error
+	return ws, err
+}
+
 func (t *TrainingDB) GetWorkoutWithExercises(workoutID uint) (Workout, error) {
 	var workout Workout
 	err := t.db.

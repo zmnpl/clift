@@ -1,2 +1,2 @@
-# clift
+# rack
 a workout logger for the console

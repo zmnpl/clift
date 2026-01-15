@@ -8,6 +8,7 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	wodb "github.com/zmnpl/clift/db"
 	coms "github.com/zmnpl/clift/ui/common"
 )
@@ -125,7 +126,8 @@ func (m workoutSelect) View() string {
 	}
 
 	sb.WriteString(coms.FocusedStyle.Render("Date: ") + m.datum.Format("2006-01-02") + "\n")
-	sb.WriteString(m.workoutList.View())
+	//sb.WriteString(m.workoutList.View())
+	sb.WriteString(lipgloss.JoinHorizontal(lipgloss.Top, m.workoutList.View(), "foo 123"))
 
 	return sb.String()
 }

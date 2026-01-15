@@ -76,7 +76,7 @@ func (m workout) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
 	case tea.WindowSizeMsg:
-		m.exerciseList.SetHeight(coms.GetContentHeight(msg.Height) - 1)
+		m.exerciseList.SetHeight(coms.GetContentHeight(msg.Height) - 3)
 
 	case coms.LockCriticalKey:
 		m.deleteUnlocked = false
@@ -172,7 +172,8 @@ func (m workout) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m workout) View() string {
 	sb := &strings.Builder{}
 	sb.WriteString(coms.FocusedStyle.Render("Date: ") + m.datum.Format("2006-01-02") + "\n")
-	sb.WriteString(m.exerciseList.View())
+	sb.WriteString(m.exerciseList.View() + "\n\n")
+	sb.WriteString(m.exerciseList.Help.View(m.exerciseList))
 	return sb.String()
 }
 
@@ -212,6 +213,7 @@ func (m *workout) refreshWEList() {
 	l.Title = "Train hard"
 	l.SetSize(ListWidth, 10)
 	l.SetShowTitle(false)
+	l.SetShowHelp(false)
 	//l.SetShowStatusBar(false)
 
 	l.FilterInput.Cursor.Style = coms.FilterCursorStyle

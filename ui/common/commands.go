@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/charmbracelet/bubbles/table"
@@ -70,6 +71,8 @@ type LockCriticalKey bool
 type MsgBackCmd struct {
 	Cmd tea.Cmd
 }
+
+type WorkoutStringMsg string
 
 func GoTo(model tea.Model) func() tea.Msg {
 	return func() tea.Msg {
@@ -263,7 +266,11 @@ func MakeJournal(performedSets []wodb.PerformedSet) table.Model {
 	return t
 }
 
-// model commands
+func WorkoutToMarkdown(wo wodb.Workout, sessionSets map[uint][]SetInput) string {
+	sb := &strings.Builder{}
+	sb.WriteString(fmt.Sprintf("# %v\n\n", wo.Name))
+	return sb.String()
+}
 
 func MakeDBPerformedSet(set SetInput, setno int, datum time.Time) wodb.PerformedSet {
 	reps, err := strconv.Atoi(set.Reps.Value())

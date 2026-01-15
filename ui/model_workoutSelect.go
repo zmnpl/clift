@@ -15,6 +15,7 @@ import (
 
 type workoutSelect struct {
 	workoutList list.Model
+	workoutMD   string
 	workoutName textinput.Model
 	datum       time.Time
 }
@@ -49,8 +50,11 @@ func (m workoutSelect) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.refreshWorkoutList(msg.Workouts)
 		return m, tea.Batch(cmd, tea.WindowSize())
 
+	case coms.WorkoutStringMsg:
+		m.workoutMD = string(msg)
+
 	case tea.WindowSizeMsg:
-		m.workoutList.SetHeight(coms.GetContentHeight(msg.Height) - 1)
+		m.workoutList.SetHeight(coms.GetContentHeight(msg.Height) - 3)
 
 	case coms.MsgWorkoutAddEdit:
 		return m, coms.ReloadWorkouts
@@ -100,6 +104,9 @@ func (m workoutSelect) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			return m, coms.RemoveWorkout(wi.ID)
 
+		case "up", "down", "j", "k":
+			m.workoutMD = coms.WorkoutToMarkdown(*m.workoutList.SelectedItem().(coms.WorkoutItem).Workout, nil)
+
 		default:
 
 		}
@@ -127,8 +134,8 @@ func (m workoutSelect) View() string {
 
 	sb.WriteString(coms.FocusedStyle.Render("Date: ") + m.datum.Format("2006-01-02") + "\n")
 	//sb.WriteString(m.workoutList.View())
-	sb.WriteString(lipgloss.JoinHorizontal(lipgloss.Top, m.workoutList.View(), "foo 123"))
-
+	sb.WriteString(lipgloss.JoinHorizontal(lipgloss.Top, m.workoutList.View(), m.workoutMD) + "\n\n")
+	sb.WriteString(m.workoutList.Help.View(m.workoutList))
 	return sb.String()
 }
 
@@ -141,6 +148,7 @@ func (m *workoutSelect) refreshWorkoutList(workouts []wodb.Workout) {
 	workoutsList.Title = "Select a Workout"
 	workoutsList.SetSize(ListWidth, coms.WINDOW_HEIGHT-coms.HEADER_FOOTER_HEIGHT)
 	workoutsList.SetShowTitle(false)
+	workoutsList.SetShowHelp(false)
 	//workoutsList.SetShowStatusBar(false)
 	workoutsList.FilterInput.Cursor.Style = coms.FilterCursorStyle
 	workoutsList.FilterInput.PromptStyle = coms.FilterPromptStyle

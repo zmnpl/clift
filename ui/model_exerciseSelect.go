@@ -4,7 +4,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/textinput"
@@ -98,7 +97,7 @@ func (m exerciseSelect) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
 	case tea.WindowSizeMsg:
-		m.exerciseList.SetHeight(coms.GetContentHeight(msg.Height) - 1 - 2) // - 1 for date
+		m.exerciseList.SetHeight(coms.GetContentHeight(msg.Height) - 1 - 3) // - 1 for date
 
 	case coms.MsgDate:
 		m.datum = time.Time(msg)
@@ -143,10 +142,8 @@ func (m exerciseSelect) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m exerciseSelect) View() string {
 	sb := &strings.Builder{}
 	sb.WriteString(coms.FocusedStyle.Render("Date: ") + m.datum.Format("2006-01-02") + "\n")
-	sb.WriteString(m.exerciseList.View())
-
-	h := help.New()
-	sb.WriteString("\n\n" + h.View(m.exerciseList))
+	sb.WriteString(m.exerciseList.View() + "\n\n\n")
+	sb.WriteString(m.exerciseList.Help.View(m.exerciseList))
 
 	return sb.String()
 }

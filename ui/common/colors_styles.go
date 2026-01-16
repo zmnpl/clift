@@ -86,6 +86,85 @@ var Hachikoo = Colorscheme{
 	Bright_white:   lipgloss.Color("#FFE6DA"),
 }
 
+var HachikooGlowMardown = []byte(`{
+    "document": {
+        "block_prefix": "\n",
+        "block_suffix": "\n",
+        "margin": 2
+    },
+    "h1": {
+        "block_prefix": "\n",
+        "block_suffix": "\n",
+        "color": "#FFEDCF",
+        "bold": true,
+        "upper_case": true
+    },
+    "h2": {
+        "block_prefix": "",
+        "block_suffix": "",
+        "color": "#FF2044",
+        "bold": true
+    },
+    "h3": {
+        "block_prefix": "\n",
+        "block_suffix": "\n",
+        "color": "#FF5D05"
+    },
+    "paragraph": {
+        "block_prefix": "",
+        "block_suffix": "",
+        "color": "#FFDAF1"
+    },
+    "blockquote": {
+        "block_prefix": "\n",
+        "block_suffix": "\n",
+        "indent": 1,
+        "indent_token": "│ ",
+        "color": "#960042"
+    },
+    "list": {
+        "block_prefix": "\n",
+        "block_suffix": "\n"
+    },
+    "item": {
+        "block_prefix": "\n",
+        "color": "#FF5D05"
+    },
+    "code_block": {
+        "block_prefix": "\n",
+        "block_suffix": "\n",
+        "color": "#FF0000",
+        "background_color": "#333333",
+        "margin": 2
+    },
+    "table": {
+        "block_prefix": "\n",
+        "block_suffix": "\n",
+        "color": "#FFDAF1"
+    },
+    "horizontal_rule": {
+        "block_prefix": "\n",
+        "block_suffix": "\n",
+        "color": "#333333",
+        "format": "**********"
+    },
+    "emph": {
+        "italic": true
+    },
+    "strong": {
+        "bold": true,
+        "color": "#FFEDCF"
+    },
+    "code": {
+        "color": "#FF0000",
+        "background_color": "#333333"
+    },
+    "link": {
+        "color": "#6F0027",
+        "underline": true
+    }
+}`)
+
 var Blackmetal = Colorscheme{
 	Black:   lipgloss.Color("#000000"),
 	Red:     lipgloss.Color("#5f8787"),
@@ -128,7 +207,7 @@ var Terafox = Colorscheme{
 	Bright_white:   lipgloss.Color("#eeeeee"),
 }
 
-var Theme = Terafox
+var Theme = Hachikoo
 
 var (
 	StatusGood   = lipgloss.NewStyle().Foreground(Theme.Cyan).Width(7).Align(lipgloss.Left)

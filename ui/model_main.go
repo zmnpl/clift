@@ -220,7 +220,7 @@ func (m model) makeStatus() string {
 		statusText = m.statusMsg.Err.Error()
 	}
 
-	status.WriteString(statusRenderer.Render("Coach") + coms.StatusCenter.Render(fmt.Sprintf("\"%v\"", statusText)))
+	status.WriteString(statusRenderer.Render("~") + coms.StatusCenter.Render(fmt.Sprintf("%v", statusText)))
 
 	return status.String()
 }

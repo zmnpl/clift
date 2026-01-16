@@ -104,9 +104,6 @@ func (m workoutSelect) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			return m, coms.RemoveWorkout(wi.ID)
 
-		case "up", "down", "j", "k":
-			m.workoutMD = coms.WorkoutToMarkdown(*m.workoutList.SelectedItem().(coms.WorkoutItem).Workout, nil)
-
 		default:
 
 		}
@@ -117,9 +114,19 @@ func (m workoutSelect) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, cmd
 	}
 
-	m.workoutList, cmd = m.workoutList.Update(msg)
+	var cmds []tea.Cmd
+	oldIndex := m.workoutList.GlobalIndex()
 
-	return m, cmd
+	m.workoutList, cmd = m.workoutList.Update(msg)
+	cmds = append(cmds, cmd)
+
+	newIndex := m.workoutList.GlobalIndex()
+
+	if newIndex != oldIndex {
+		cmds = append(cmds, coms.WorkoutToMarkdown(*m.workoutList.SelectedItem().(coms.WorkoutItem).Workout, nil))
+	}
+
+	return m, tea.Batch(cmds...)
 }
 
 func (m workoutSelect) View() string {

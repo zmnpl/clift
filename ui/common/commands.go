@@ -9,6 +9,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/glamour"
 	"github.com/charmbracelet/lipgloss"
 	wodb "github.com/zmnpl/clift/db"
 )
@@ -266,10 +267,33 @@ func MakeJournal(performedSets []wodb.PerformedSet) table.Model {
 	return t
 }
 
-func WorkoutToMarkdown(wo wodb.Workout, sessionSets map[uint][]SetInput) string {
-	sb := &strings.Builder{}
-	sb.WriteString(fmt.Sprintf("# %v\n\n", wo.Name))
-	return sb.String()
+func WorkoutToMarkdown(wo wodb.Workout, sessionSets map[uint][]SetInput) func() tea.Msg {
+	return func() tea.Msg {
+		sb := &strings.Builder{}
+
+		sb.WriteString(fmt.Sprintf("# %v\n", wo.Name))
+
+		for _, we := range wo.WorkoutExercises {
+			sb.WriteString(fmt.Sprintf("## %v\n", we.Exercise.GetName()))
+			for i, set := range we.Sets {
+				if i > 0 {
+					sb.WriteString(" // ")
+				}
+				sb.WriteString(fmt.Sprintf("%v @ %v", set.Reps, set.Weight))
+			}
+			sb.WriteString("\n")
+		}
+
+		r, _ := glamour.NewTermRenderer(
+			glamour.WithStylesFromJSONBytes(HachikooGlowMardown),
+			glamour.WithWordWrap(80),
+		)
+
+		//md, _ := glamour.Render(sb.String(), "notty")
+		md, _ := r.Render(sb.String())
+
+		return WorkoutStringMsg(md)
+	}
 }
 
 func MakeDBPerformedSet(set SetInput, setno int, datum time.Time) wodb.PerformedSet {
